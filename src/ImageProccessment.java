@@ -1,11 +1,6 @@
 import java.awt.image.BufferedImage;
 
 public class ImageProccessment {
-	private int borderHeight;
-	private int borderWidth;
-	
-    private int visited[][];
-    private int perimeter;
     
 
     /*
@@ -38,10 +33,8 @@ public class ImageProccessment {
      */
     
     public static int getObjectWidth(BufferedImage image) {
-    	boolean aux = false;
     	int count = 0;
     	int objectWidth = 0;
-    	int[] init = new int[2];
     	
         for (int x = 0; x < image.getHeight(); x++) {
             for (int y = 0; y < image.getWidth(); y++) {
@@ -64,10 +57,8 @@ public class ImageProccessment {
      */
     
     public static int getObjectHeight(BufferedImage image) {
-    	boolean aux = false;
     	int count = 0;
     	int objectHeight = 0;
-    	int[] init = new int[2];
     	
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
@@ -85,37 +76,44 @@ public class ImageProccessment {
 		return objectHeight;
     }
         
-    public static int chainCodes(BufferedImage image) {
+    public static int chainCodes(BufferedImage image, int op) {
     	int[][] visited = new int[image.getWidth()][image.getHeight()];
     	int perimeter = 0;
+    	int pointsNumber = 0;
     	
-    	chainCodesAux(image, visited, perimeter, 0, 0);
+    	chainCodesAux(image, visited, perimeter, pointsNumber, 0, 0);
     	
-    	return perimeter;
+    	if (op == 0) // Calcula o número de pontos da borda
+    		return pointsNumber;
+    	else if (op == 1) // Tamanho da borda
+    		return perimeter;
+    	else
+    		return -1;
     }
     
     /*
      * Calcula o número de pontos da borda do objeto
      */
-    private static void chainCodesAux(BufferedImage image, int[][] visited, int perimeter, int x, int y) {
+    private static void chainCodesAux(BufferedImage image, int[][] visited, int perimeter, int pointsNumber, int x, int y) {
     	int[] point = new int[2];
     	
-    	point = nextPixels(image, visited, perimeter, x, y);
+    	point = nextPixels(image, visited, perimeter, pointsNumber, x, y);
     	
     	visited[x][y] = 1;
     	
     	if(visited[point[0]][point[1]] == 0) {
-    		chainCodesAux(image, visited, point[0], point[1]);
+    		chainCodesAux(image, visited, perimeter, pointsNumber, point[0], point[1]);
     	} else {
     		System.out.println();
     	}
     }
 
 
-	private static int[] nextPixels(BufferedImage image, int[][] visited, int perimeter, int x, int y) {
+	private static int[] nextPixels(BufferedImage image, int[][] visited, int perimeter, int pointsNumber, int x, int y) {
 		int[] point = new int[2];
 		boolean aux = false;
 		
+
 		int[][] sides = {{0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}, {-1,1}};
 		int i = 0;
 		
@@ -171,6 +169,6 @@ public class ImageProccessment {
 		if (x < image.getHeight()) {
 			if (image.getRGB(y, x+1) == -1) return true;
 		}
-		return false;
+	return false;
 	}
 }
