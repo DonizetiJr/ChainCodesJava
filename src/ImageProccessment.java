@@ -116,88 +116,27 @@ public class ImageProccessment {
 		int[] point = new int[2];
 		boolean aux = false;
 		
-		if (border(image, x, y+1) && !aux && visited[x][y+1] == 0) {
-			y++;
-			System.out.println("0 ");
-			perimeter += 1;
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
+		int[][] sides = {{0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}, {-1,0}, {-1,1}};
+		int i = 0;
 		
-		if (border(image, x+1, y+1) && !aux && visited[x+1][y+1] == 0) {
-			y++;
-			x++;
-			System.out.println("1 ");
-			perimeter += Math.sqrt(2);
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
-		
-		if (border(image, x+1, y-1) && !aux && visited[x+1][y] == 0) {
-			x++;
-			System.out.println("2 ");
-			perimeter += 1;
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
-		
-		if (border(image, x+1, y-1) && !aux && visited[x+1][y-1] == 0) {
-			y--;
-			x++;
-			System.out.println("3 ");
-			perimeter += Math.sqrt(2);
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
-		
-		if (border(image, x, y-1) && !aux && visited[x][y-1] == 0) {
-			y--;
-			System.out.println("4 ");
-			perimeter += 1;
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
-		
-		if (border(image, x-1, y-1) && !aux && visited[x-1][y-1] == 0) {
-			x--;
-			y--;
-			System.out.println("5 ");
-			perimeter += Math.sqrt(2);
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
-		
-		if (border(image, x-1, y) && !aux && visited[x-1][y] == 0) {
-			x--;
-			System.out.println("6 ");
-			perimeter += 1;
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
-		}
-		
-		if (border(image, x-1, y+1) && !aux && visited[x-1][y+1] == 0) {
-			x--;
-			y--;
-			System.out.println("7 ");
-			perimeter += Math.sqrt(2);
-			aux = true;
-			point[0] = x;
-			point[1] = y;
-			return point;
+		for (int[] p : sides) {
+			int newX = x+p[0];
+			int newY = y+p[1];
+			
+			if (border(image, newX, newY) && !aux && visited[newX][newY] == 0) {
+				System.out.println(i+" ");
+				
+				aux = true;
+				point[0] = newX;
+				point[1] = newY;
+				perimeter += (p[0]*p[1] == 0)
+						? 1 // if not diagonal
+						: Math.sqrt(2); // else 
+				
+				return point;
+			}
+			
+			i++;
 		}
 		
 		point[0] = x;
@@ -232,6 +171,6 @@ public class ImageProccessment {
 		if (x < image.getHeight()) {
 			if (image.getRGB(y, x+1) == -1) return true;
 		}
+		return false;
 	}
-	return false;
 }
