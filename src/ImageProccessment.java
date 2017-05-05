@@ -85,11 +85,13 @@ public class ImageProccessment {
 		return objectHeight;
     }
         
-    public static void chainCodes(BufferedImage image) {
+    public static int chainCodes(BufferedImage image) {
     	int[][] visited = new int[image.getWidth()][image.getHeight()];
     	int perimeter = 0;
     	
     	chainCodesAux(image, visited, perimeter, 0, 0);
+    	
+    	return perimeter;
     }
     
     /*
@@ -98,7 +100,7 @@ public class ImageProccessment {
     private static void chainCodesAux(BufferedImage image, int[][] visited, int perimeter, int x, int y) {
     	int[] point = new int[2];
     	
-    	point = nextPixels(visited, perimeter, x, y);
+    	point = nextPixels(image, visited, perimeter, x, y);
     	
     	visited[x][y] = 1;
     	
@@ -110,11 +112,11 @@ public class ImageProccessment {
     }
 
 
-	private static int[] nextPixels(int[][] visited, int perimeter, int x, int y) {
+	private static int[] nextPixels(BufferedImage image, int[][] visited, int perimeter, int x, int y) {
 		int[] point = new int[2];
 		boolean aux = false;
 		
-		if (border(x, y+1) && !aux && visited[x][y+1] == 0) {
+		if (border(image, x, y+1) && !aux && visited[x][y+1] == 0) {
 			y++;
 			System.out.println("0 ");
 			perimeter += 1;
@@ -124,7 +126,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x+1, y+1) && !aux && visited[x+1][y+1] == 0) {
+		if (border(image, x+1, y+1) && !aux && visited[x+1][y+1] == 0) {
 			y++;
 			x++;
 			System.out.println("1 ");
@@ -135,7 +137,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x+1, y-1) && !aux && visited[x+1][y] == 0) {
+		if (border(image, x+1, y-1) && !aux && visited[x+1][y] == 0) {
 			x++;
 			System.out.println("2 ");
 			perimeter += 1;
@@ -145,7 +147,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x+1, y-1) && !aux && visited[x+1][y-1] == 0) {
+		if (border(image, x+1, y-1) && !aux && visited[x+1][y-1] == 0) {
 			y--;
 			x++;
 			System.out.println("3 ");
@@ -156,7 +158,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x, y-1) && !aux && visited[x][y-1] == 0) {
+		if (border(image, x, y-1) && !aux && visited[x][y-1] == 0) {
 			y--;
 			System.out.println("4 ");
 			perimeter += 1;
@@ -166,7 +168,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x-1, y-1) && !aux && visited[x-1][y-1] == 0) {
+		if (border(image, x-1, y-1) && !aux && visited[x-1][y-1] == 0) {
 			x--;
 			y--;
 			System.out.println("5 ");
@@ -177,7 +179,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x-1, y) && !aux && visited[x-1][y] == 0) {
+		if (border(image, x-1, y) && !aux && visited[x-1][y] == 0) {
 			x--;
 			System.out.println("6 ");
 			perimeter += 1;
@@ -187,7 +189,7 @@ public class ImageProccessment {
 			return point;
 		}
 		
-		if (border(x-1, y+1) && !aux && visited[x-1][y+1] == 0) {
+		if (border(image, x-1, y+1) && !aux && visited[x-1][y+1] == 0) {
 			x--;
 			y--;
 			System.out.println("7 ");
@@ -204,9 +206,32 @@ public class ImageProccessment {
 	}
 
 
-	private static boolean border(int x, int i) {
-		// TODO Auto-generated method stub
-		return false;
+	private static boolean border(BufferedImage image, int x, int y) {
+		if (image.getRGB(x, y) == 0) return false;
+		
+		// Verifica esquerda
+		if (y == 0) return true;
+		if (y > 0) {
+			if(image.getRGB(y-1, x) == -1) return true;
+		}
+		
+		// Verifica topo
+		if (x == 0) return true;
+		if (x > 0) {
+			if (image.getRGB(y, x-1) == -1) return true;
+		}
+		
+		// Verifica direita
+		if (y == image.getWidth()) return true;
+		if (y < image.getWidth()) {
+			if (image.getRGB(y+1, x) == -1) return true;
+		}
+		
+		// Verifica embaixo
+		if (x == image.getHeight()) return true;
+		if (x < image.getHeight()) {
+			if (image.getRGB(y, x+1) == -1) return true;
+		}
 	}
-
+	return false;
 }
