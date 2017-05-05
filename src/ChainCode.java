@@ -15,11 +15,9 @@ public class ChainCode {
 		
 		File inFile = new File("src/" + srt);
 		try {
-			BufferedImage image = ImageIO.read(inFile);
-			ImageProccessment.getInitialPoint(image);
+			ImageProccessment processedImage = new ImageProccessment(ImageIO.read(inFile));
 			
 			do {
-				op = EntradaTeclado.leInt();
 				System.out.println("Escolha um opção:\n");
 				System.out.println("1) Localizar ponto inicial.");
 				System.out.println("2) Achar a largura.");
@@ -27,30 +25,36 @@ public class ChainCode {
 				System.out.println("4) Calcular o número de pontos da borda.");
 				System.out.println("5) Calcular tamanho da borda.");
 				System.out.println("6) Sair.");
+				op = EntradaTeclado.leInt();
 				
 				switch (op) {
 				case 1:
-					int[] point = ImageProccessment.getInitialPoint(image);
+					int[] point = processedImage.getInitialPoint();
 					System.out.println("(" + point[0]+", " + point[1]+")" );
 					break;
 					
 				case 2:
-					System.out.println(ImageProccessment.getObjectWidth(image));
+					System.out.println(processedImage.getObjectWidth());
 					break;
 					
 				case 3:
-					System.out.println(ImageProccessment.getObjectHeight(image));
+					System.out.println(processedImage.getObjectHeight());
 					break;
 					
 				case 4:
-					System.out.println(ImageProccessment.chainCodes(image, 0));
+					System.out.println(processedImage.chainCodes(0));
 					break;
 
 				case 5:
-					System.out.println(ImageProccessment.chainCodes(image, 1));
+					System.out.println(processedImage.chainCodes(1));
+					break;
+				
+				case 6:
+					System.out.println("Saindo...");
+					break;
+					
 				default:
 					System.out.println("Operador inválido!");
-					break;
 				}
 				
 			} while (op != 6);
