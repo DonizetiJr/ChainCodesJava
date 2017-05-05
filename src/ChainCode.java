@@ -1,4 +1,4 @@
-import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public class ChainCode {
 		
 		File inFile = new File("src/" + srt);
 		try {
-			ImageProccessment processedImage = new ImageProccessment(ImageIO.read(inFile));
+			ImageProcess processedImage = new ImageProcess(ImageIO.read(inFile));
 			
 			do {
 				System.out.println("Escolha um opção:\n");
